@@ -7,7 +7,7 @@ import time
 from io import BytesIO
 import gtts
 
-model=keras.models.load_model("My_model.keras")
+
 file=BytesIO()
 
 st.set_page_config("Digit Recognition Page")
@@ -41,17 +41,19 @@ with col1.container():
 
 
 
-if cnvs.image_data is not None:
-    img=cv2.cvtColor(cnvs.image_data,cv2.COLOR_BGR2GRAY)
-    img=cv2.resize(img,(28,28))
-    img=np.array(img)
-    img=img/255.0
-    img=np.where(img<1,1,0)
-    img=img.reshape(1,28,28,1)
-    pred=model.predict(img)
-    
 
 if st.button("Recognize "):
+    
+    model=keras.models.load_model("My_model.keras")
+    if cnvs.image_data is not None:
+        img=cv2.cvtColor(cnvs.image_data,cv2.COLOR_BGR2GRAY)
+        img=cv2.resize(img,(28,28))
+        img=np.array(img)
+        img=img/255.0
+        img=np.where(img<1,1,0)
+        img=img.reshape(1,28,28,1)
+        pred=model.predict(img)
+        
 
     acc=np.max(pred)
     acc=str(int((acc)*100))+'% '
